@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/SushilBhandary/Todo-backend/issues"
   },
-  "homepage": "https://github.com/SushilBhandary/Todo-backend#readme"
+  "homepage": "https://github.com/SushilBhandary/Todo-backend#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.6",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^6.8.1"
+  }
 }
