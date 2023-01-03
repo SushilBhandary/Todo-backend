@@ -1,16 +1,17 @@
-import User from "../models/user.scheme"
-import JWT from "jsonwebtoken"
-import config from "../config/config";
+const User = require("../models/user.scheme")
+const JWT = require("jsonwebtoken")
+const config = require("../config/config")
+const bcrypt = require("bcryptjs")
 
 
-export const signUp = async(req, res) => {
+exports.signUp = async(req, res) => {
     const {name, email, password} = req.body
 
     if(!(name && email && password)) {
         res.status(401).send("Please fill all fields")
     }
 
-    const existingUser = await existingUser.findOne({emial})
+    const existingUser = await User.findOne({email})
     if (existingUser) {
         res.status(401).send("User already exists")
     }
@@ -18,8 +19,8 @@ export const signUp = async(req, res) => {
     const ency = await bcrypt.hash(password, 10)
 
     const user = await User.create({
-            name,
-            email,
+            name, 
+            email, 
             password : ency
         });
         const token = JWT.sign(
@@ -47,7 +48,7 @@ export const signUp = async(req, res) => {
 }
 
 
-export const login = async (req, res) => {
+exports.login = async (req, res) => {
     const { email, password } = req.body
     if ( !email || !password) {
         res.status(400).send("Please fill all fields")
@@ -77,7 +78,7 @@ export const login = async (req, res) => {
 }
 
 
-export const logout = async (req, res) => {
+exports.logout = async (req, res) => {
     res.cookie("token", null, {
         expires: new Date(Date.now()),
         httpOnly: true
@@ -88,7 +89,7 @@ export const logout = async (req, res) => {
     })
 }
 
-export const getAllTodo = async (req, res) => {
+exports.getAllTodo = async (req, res) => {
     const {userid} = req.param
     const user = await User.findById(id)
     if(!user) {

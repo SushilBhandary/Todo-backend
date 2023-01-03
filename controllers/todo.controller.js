@@ -1,8 +1,8 @@
-import Todo from "../models/todo.schema";
-import user from "../models/user.scheme";
+const Todo = require( "../models/todo.schema");
+const user = require(  "../models/user.scheme");
 
 
-const addTodo = async(req, res) => {
+exports.addTodo = async(req, res) => {
     const {userid} = req.param
     const {todoName, tasks} = req.body
 
@@ -20,7 +20,7 @@ const addTodo = async(req, res) => {
     })
 }
 
-const updateTodo = async(req, res) => {
+exports.updateTodo = async(req, res) => {
     const {id} = req.param
     const {todoName, tasks} = req.body
 
@@ -37,7 +37,7 @@ const updateTodo = async(req, res) => {
     })
 }
 
-const deleteTodo = async(req, res) => {
+exports.deleteTodo = async(req, res) => {
     const {userid, id} = req.param
     const user = await User.findById(userid)
 

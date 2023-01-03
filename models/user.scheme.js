@@ -1,5 +1,4 @@
-import mongoose from "mongoose";
-import Todo from "./todo.schema";
+const mongoose = require("mongoose");
 
 const userSchema = new mongoose.Schema(
     {
@@ -16,9 +15,10 @@ const userSchema = new mongoose.Schema(
             required : [true, "password is required"],
         },
         todos : {
-            type : [Todo]
+            type : [mongoose.Schema.Types.ObjectId],
+            ref : "todo"
         }
     }
 )
 
-export default mongoose.model('user', userSchema)
+module.exports = mongoose.model('user', userSchema)

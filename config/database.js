@@ -1,7 +1,6 @@
-import mongoose from "mongoose";
-import config from "./config"
+const mongoose = required("mongoose");
+const config = required( "./config")
 
-import config from "./config";
 const MONGOOS_URL = config.MONGODB_URL
 
 exports.connect = () => {

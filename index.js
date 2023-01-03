@@ -1,12 +1,19 @@
-import mongoose from 'mongoose'
-import app from './app.js'
-import config from "./config/config"
 
-await mongoose.connect(config.MONGODB_URL)
-console.log("DB CONNECTED");
+const mongoose = require('mongoose')
+const app = require('./app.js')
+const config = require("./config/config")
 
+const conn = async() => {
+    await mongoose.connect(config.MONGODB_URL)
+    .then(console.log("DB CONNECTED"))
+    .catch((e) => console.log("Error", e))
+}
+
+conn()
 const onListening = () => {
-    console.log(`Listening on ${config.PORT}`);
+    console.log(config.PORT);
+    console.log(config);
+    console.log(`Listening on http://localhost:${config.PORT}/`);
 }
 
 app.listen(config.PORT, onListening)
