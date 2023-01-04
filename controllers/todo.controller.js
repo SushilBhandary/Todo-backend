@@ -1,30 +1,32 @@
 const Todo = require( "../models/todo.schema");
-const user = require(  "../models/user.scheme");
+const User = require(  "../models/user.scheme");
 
 
 exports.addTodo = async(req, res) => {
-    const {userid} = req.param
+    const {userid} = req.params
     const {todoName, tasks} = req.body
-
     const todo = await Todo.create({
-        todoName,
-        tasks
+        todo : todoName,
+        tasks,
+        star : false, 
+        completed : false
     })
-    const user = await User.findById(id)
-    user.todos.push(todo)
+    await todo.save()
+    const user = await User.findById(userid)
+    user.todos.push(todo._id)
     await user.save()
     res.status(200).json({
         success: true,
-        message: "Collection created with success",
+        message: "todo created Succesfully",
         todo
     })
 }
 
 exports.updateTodo = async(req, res) => {
-    const {id} = req.param
-    const {todoName, tasks} = req.body
+    const {id, userid} = req.params
+    const {todoName, tasks, star, completed} = req.body
 
-    const updatedTodo = await Todo.findByIdAndUpdate(id, {todo:todoName, tasks}, {new: true})
+    const updatedTodo = await Todo.findByIdAndUpdate(id, { todo:todoName, tasks, star, completed}, {new: true})
 
     if (!updatedTodo) {
         res.status(401).send('Todo not found')

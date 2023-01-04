@@ -1,4 +1,5 @@
 const User = require("../models/user.scheme")
+const Todo = require("../models/todo.schema")
 const JWT = require("jsonwebtoken")
 const config = require("../config/config")
 const bcrypt = require("bcryptjs")
@@ -32,7 +33,6 @@ exports.signUp = async(req, res) => {
                 expiresIn: config.JWT_EXPIRY
             }
     )
-    console.log(user);
     user.password = undefined
 
     res.cookie("token", token, {
@@ -53,7 +53,6 @@ exports.login = async (req, res) => {
     if ( !email || !password) {
         res.status(400).send("Please fill all fields")
     }
-
     const user = await User.findOne({email})
 
     if (user && (await bcrypt.compare(password, user.password))) {
@@ -64,16 +63,18 @@ exports.login = async (req, res) => {
             {
                 expiresIn: config.JWT_EXPIRY
             })
-        user.password = undefined;
+        user.password = undefined; 
         res.cookie("token", token, {
             expires: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000),
-            httpOnly: true,
+            httpOnly: true, 
         } )
         return res.status(200).json({
             success: true,
             token,
             user
         })
+    } else {
+        res.status(400).send("User does not exist")
     }
 }
 
@@ -90,14 +91,20 @@ exports.logout = async (req, res) => {
 }
 
 exports.getAllTodo = async (req, res) => {
-    const {userid} = req.param
-    const user = await User.findById(id)
+    const userid = req.params.userid
+    const user = await User.findById(userid)
     if(!user) {
         res.status(401).send("user not found")
     }
-    const todos = user.todos
+    const todoList = []
+    user.todos.forEach(element => {
+        let t = Todo.findById(element)
+        if(t) {
+            todoList.push(t)
+        }
+    });
     res.status(200).json({
         success: true,
-        todos
+        todoList
     })
 }

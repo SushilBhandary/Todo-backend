@@ -8,6 +8,14 @@ const todoSchema = new mongoose.Schema({
     tasks : {
         type : [String],
         required : [true, "task is required"]
+    },
+    star : {
+        type : Boolean,
+        default : false
+    },
+    completed : {
+        type : Boolean,
+        default : false
     }
 },
 {

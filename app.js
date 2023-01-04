@@ -27,9 +27,9 @@ app.get("/", (req, res) => {
 app.post("/login", login)
 app.post("/signup", signUp)
 app.post("/logout", logout)
-app.get("/getalltodos:userid", getAllTodo)
-app.post("/createtodo:userid", addTodo)
+app.get("/getalltodos/:userid", getAllTodo)
+app.post("/createtodo/:userid", addTodo)
 app.delete("/delete-todo", deleteTodo)
-app.put("/edit-todo:id:userid", updateTodo)
+app.put("/edit-todo/:id/:userid", updateTodo)
 
 module.exports =  app
