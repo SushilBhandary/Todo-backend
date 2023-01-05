@@ -11,8 +11,6 @@ const conn = async() => {
 
 conn()
 const onListening = () => {
-    console.log(config.PORT);
-    console.log(config);
     console.log(`Listening on http://localhost:${config.PORT}/`);
 }
 

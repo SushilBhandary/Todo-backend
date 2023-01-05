@@ -25,41 +25,41 @@ exports.addTodo = async(req, res) => {
 exports.updateTodo = async(req, res) => {
     const {id, userid} = req.params
     const {todoName, tasks, star, completed} = req.body
-
     const updatedTodo = await Todo.findByIdAndUpdate(id, { todo:todoName, tasks, star, completed}, {new: true})
-
+    
     if (!updatedTodo) {
         res.status(401).send('Todo not found')
     }
-
+    const user = await User.findById(userid)
+    const todoList = []
+    for (item of user.todos) {
+        let t = await Todo.findById(item)
+        todoList.push(t)
+    }
     res.status(200).json({
         success: true,
         message: "Todo updated successfully",
-        updatedTodo
+        todoList
     })
 }
 
 exports.deleteTodo = async(req, res) => {
-    const {userid, id} = req.param
+    const {id, userid } = req.params
     const user = await User.findById(userid)
+    user.todos = user.todos.filter( todo => todo !=id )
+    await user.save()
+    await Todo.findByIdAndDelete(id)
 
-    user.todos.forEach( (td, index) => {
-        if (td._id == id) {
-            delete user.todos[index]
-        }
-    });
-    
-    const todoToDeleted = await Todo.findByIdAndDelete(id)
-    if (!todoToDeleted) {
-        res.status(401).send('Todo was not found')
+    const todoList = []
+    for (item of user.todos) {
+        let t = await Todo.findById(item)
+        todoList.push(t)
     }
-
-    // todoToDeleted.remove()
 
     res.status(200).json({
         success: true,
         message: "Collection deleted successfully",
-        
+        todoList
     })
 
 }

@@ -97,12 +97,10 @@ exports.getAllTodo = async (req, res) => {
         res.status(401).send("user not found")
     }
     const todoList = []
-    user.todos.forEach(element => {
-        let t = Todo.findById(element)
-        if(t) {
-            todoList.push(t)
-        }
-    });
+    for (item of user.todos) {
+        let t = await Todo.findById(item)
+        todoList.push(t)
+      }
     res.status(200).json({
         success: true,
         todoList
