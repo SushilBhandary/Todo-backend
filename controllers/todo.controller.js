@@ -64,3 +64,19 @@ exports.deleteTodo = async(req, res) => {
 
 }
 
+exports.getAllTodo = async (req, res) => {
+    const userid = req.params.userid
+    const user = await User.findById(userid)
+    if(!user) {
+        res.status(401).send("user not found")
+    }
+    const todoList = []
+    for (item of user.todos) {
+        let t = await Todo.findById(item)
+        todoList.push(t)
+      }
+    res.status(200).json({
+        success: true,
+        todoList
+    })
+}
