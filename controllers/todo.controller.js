@@ -28,7 +28,9 @@ exports.updateTodo = async(req, res) => {
     const updatedTodo = await Todo.findByIdAndUpdate(id, { todo:todoName, tasks, star, completed}, {new: true})
     
     if (!updatedTodo) {
-        res.status(401).send('Todo not found')
+        res.status(401).json({
+            error : "Todo not found"
+        })
     }
     const user = await User.findById(userid)
     const todoList = []
@@ -68,7 +70,9 @@ exports.getAllTodo = async (req, res) => {
     const userid = req.params.userid
     const user = await User.findById(userid)
     if(!user) {
-        res.status(401).send("user not found")
+        res.status(401).json({
+            error : "user not found"
+        })
     }
     const todoList = []
     for (item of user.todos) {

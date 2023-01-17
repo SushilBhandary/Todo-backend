@@ -12,7 +12,7 @@ const {
     logout
 } = require("./controllers/auth.controller")
 const cors = require('cors');
-const auth = require("./middlewares/auth.middlewares")
+const {auth} = require("./middlewares/auth.middlewares")
 
 
 const app = express()
@@ -27,9 +27,9 @@ app.get("/", (req, res) => {
 app.post("/login", login)
 app.post("/signup", signUp)
 app.post("/logout", logout)
-app.get("/getalltodos/:userid", getAllTodo)
-app.post("/createtodo/:userid", addTodo)
-app.delete("/delete-todo/:id/:userid", deleteTodo)
-app.put("/edit-todo/:id/:userid", updateTodo)
+app.get("/getalltodos/:userid",auth , getAllTodo)
+app.post("/createtodo/:userid",auth , addTodo)
+app.delete("/delete-todo/:id/:userid",auth , deleteTodo)
+app.put("/edit-todo/:id/:userid",auth , updateTodo)
 
 module.exports =  app

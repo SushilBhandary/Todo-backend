@@ -1,17 +1,20 @@
 const JWT = require("jsonwebtoken")
 const config = require("../config/config")
 
-const auth = (req, res, next) => {
-    const {token} = req.cookies
+exports.auth = (req, res, next) => {
+    const token = req.headers.authorization
     if (!token) {
-        res.status(401).send('Not authorized to access this route')
+        return res.status(401).json({
+            error : "Not authorized to access this route 1"
+        })
     }
-
     try {
         const decode = JWT.verify(token, config.JWT_SECRET)
         req.user = decode
         return next()
     } catch (error) {
-        res.status(401).send('Not authorized to access this route')
+        return res.status(401).json({
+            error : "Not authorized to access this routec 2"
+        })
     }
 }
