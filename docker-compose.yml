@@ -1,0 +1,24 @@
+version: '1.00.1'
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+  Backend:
+    build: .
+    image: todo-backend
+    container_name: todo
+    depends_on:
+      - mongodb
+    ports:
+      - "4000:4000"
+    environment:
+      - MONGODB_URL = mongodb://mongodb:27017
+      - JWT_SECRET = hi
+      - JWT_EXPIRY = 3d
+      - PORT = 6000
+volumes:
+  mongodb_data:
